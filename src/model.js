@@ -19,8 +19,16 @@ class Model {
     }
 
     async loadModelList() {
-        const response = await fetch(`${this.cdnPath}model_list.json`);
-        this.modelList = await response.json();
+        // const response = await fetch(`${this.cdnPath}model_list.json`);
+        // this.modelList = await response.json();
+        this.modelList = {
+            models: [
+                "ShizukuTalk/shizuku-48"
+            ],
+            messages: [
+                "Shizuku Talk ！这里是 Shizuku ~"
+            ]
+        }
     }
 
     async loadModel(modelId, modelTexturesId, message) {
@@ -29,7 +37,7 @@ class Model {
         showMessage(message, 4000, 10);
         if (this.useCDN) {
             if (!this.modelList) await this.loadModelList();
-            const target = randomSelection(this.modelList.models[modelId]);
+            const target = this.modelList.models[modelId];
             loadlive2d("live2d", `${this.cdnPath}model/${target}/index.json`);
         } else {
             loadlive2d("live2d", `${this.apiPath}get/?id=${modelId}-${modelTexturesId}`);
